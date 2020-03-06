@@ -37,8 +37,8 @@ def assign_labels_to_centroids(pred_labels, gt_labels):
 
 
 
-mnist_trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
-mnist_testset = datasets.MNIST(root='./data', train=False, download=True, transform=transforms.ToTensor())
+mnist_trainset = datasets.MNIST(root='../dataset', train=True, download=True, transform=transforms.ToTensor())
+mnist_testset = datasets.MNIST(root='../dataset', train=False, download=True, transform=transforms.ToTensor())
 
 train_data, train_label = get_all_data_mnist(mnist_trainset) # train_data is 60000 x 28 x 28
 
@@ -64,7 +64,7 @@ _, train_final_pred = assign_labels_to_centroids(km.labels_, train_label)
 train_acc = np.sum(train_final_pred == train_label) / n_samples
 print("train acc: %.3f" % train_acc)
 
-_, test_final_pred = assign_labels_to_centroids(km.fit_predict(test_data), test_label)
+_, test_final_pred = assign_labels_to_centroids(km.predict(test_data), test_label)
 test_acc = np.sum(test_final_pred == test_label) / len(test_label)
 print("test acc: %.3f" % test_acc)
 
@@ -80,7 +80,7 @@ _, train_final_pred = assign_labels_to_centroids(km.labels_, train_label)
 train_acc = np.sum(train_final_pred == train_label) / n_samples
 print("train acc: %.3f" % train_acc)
 
-_, test_final_pred = assign_labels_to_centroids(km.fit_predict(pca.fit_transform(test_data)), test_label)
+_, test_final_pred = assign_labels_to_centroids(km.predict(pca.transform(test_data)), test_label)
 test_acc = np.sum(test_final_pred == test_label) / len(test_label)
 print("test acc: %.3f" % test_acc)
 
