@@ -14,18 +14,22 @@ from lib.utils import *
 if __name__ == "__main__":
     
     train_data, train_label, test_data, test_label =  prepare_mnist_dataset()
-    pca = PCA(0.99, whiten=True)
-    data = pca.fit_transform(train_data)
-    print(data.shape)
-    n_components = np.arange(50, 210, 10)
-    # models = [mixture.GaussianMixture(n, covariance_type='full', random_state=0)
-    #         for n in n_components]
-    # aics = []
-    # for model in models:
-    #     print("Fitting for model:", model)
-    #     aic = model.fit(data).aic(data) 
-    # plt.plot(n_components, aics)
-    print("Fitting GMM")
-    print(train_data.shape)
-    g = mixture.GaussianMixture(n_components=10)
-    g.fit(train_data) 
+    pca = PCA(0.5, whiten=True)
+    pca = pca.fit(train_data)
+    train_data_pca = pca.transform(train_data)
+    test_data_pca = pca.transform(test_data)
+
+    cov_type = 'full'
+    n_comp = 40
+    print("Train:", train_data_pca.shape, "Test:", test_data_pca.shape, "Diag_type:", cov_type, "Num_comp", n_comp)
+    gmm = mixture.GaussianMixture(n_components=n_comp, covariance_type=cov_type)
+    gmm.fit(train_data_pca)
+
+
+    train_pred = gmm.predict(train_data_pca)
+    train_final_pred, label_dict = assign_majority(train_pred, train_label)
+    print("Train Acc:", np.mean(train_final_pred == train_label))
+
+    test_pred = gmm.predict(test_data_pca)
+    test_final_pred = pred_majority(test_pred, label_dict)
+    print("Test Acc:", np.mean(test_final_pred == test_label))

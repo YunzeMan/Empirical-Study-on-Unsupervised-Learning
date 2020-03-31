@@ -43,10 +43,12 @@ def prepare_mnist_dataset():
     print("************************ Finished mnist ************************")
     return train_data, train_label, test_data, test_label
 
+
 def assign_majority(pred, label):
     unique_pred = np.unique(pred)
     final_pred = np.zeros(pred.shape)
     label_dict = {}
+
     for i in unique_pred:
         pred_cases = np.where(pred == i)
         case_labels = label[pred_cases[0]]
@@ -55,4 +57,13 @@ def assign_majority(pred, label):
         label_dict[i] = assigned_label
     for i in unique_pred:
         final_pred[pred == i] = label_dict[i]
+    return final_pred, label_dict
+
+
+def pred_majority(pred, label_dict):
+    unique_pred = np.unique(pred)
+    final_pred = np.zeros(pred.shape)
+    for i in unique_pred:
+        final_pred[pred == i] = label_dict[i]
+        
     return final_pred
