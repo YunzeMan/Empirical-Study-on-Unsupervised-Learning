@@ -35,11 +35,16 @@ if __name__ == "__main__":
     t0 = time()
     km = KMeans(init='k-means++', n_clusters=n_digits, n_init=1).fit(train_data)
     print("done in %0.3fs" % (time() - t0))
-    _, train_final_pred = assign_labels_to_centroids(km.labels_, train_label)
+    assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
     train_acc = np.sum(train_final_pred == train_label) / n_samples
     print("train acc: %.3f" % train_acc)
 
-    _, test_final_pred = assign_labels_to_centroids(km.fit_predict(test_data), test_label)
+    predicted_label = km.predict(test_data)
+    test_final_pred = np.zeros_like(predicted_label)
+    for i in range(10):
+        test_final_pred[predicted_label == i] = assigned_labels[i]
+
+    # _, test_final_pred = assign_labels_to_centroids(km.predict(test_data), test_label)
     test_acc = np.sum(test_final_pred == test_label) / len(test_label)
     print("test acc: %.3f" % test_acc)
 
@@ -51,11 +56,15 @@ if __name__ == "__main__":
     train_data_pca = pca.fit_transform(train_data) # 60000 x 50
     km = KMeans(init='k-means++', n_clusters=n_digits, n_init=10).fit(train_data_pca)
     print("done in %0.3fs" % (time() - t0))
-    _, train_final_pred = assign_labels_to_centroids(km.labels_, train_label)
+    assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
     train_acc = np.sum(train_final_pred == train_label) / n_samples
     print("train acc: %.3f" % train_acc)
 
-    _, test_final_pred = assign_labels_to_centroids(km.fit_predict(pca.fit_transform(test_data)), test_label)
+    predicted_label = km.predict(pca.transform(test_data))
+    test_final_pred = np.zeros_like(predicted_label)
+    for i in range(10):
+        test_final_pred[predicted_label == i] = assigned_labels[i]
+
     test_acc = np.sum(test_final_pred == test_label) / len(test_label)
     print("test acc: %.3f" % test_acc)
 
