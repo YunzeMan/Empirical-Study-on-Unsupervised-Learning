@@ -25,7 +25,7 @@ To visualize:
 A pretrained model is at http://models.tensorpack.com/#GAN
 """
 
-BATCH = 128
+BATCH = 100
 # latent space is cat(10) x uni(2) x noise(NOISE_DIM)
 NUM_CLASS = 10
 NUM_UNIFORM = 2
@@ -101,7 +101,8 @@ def sample_prior(batch_size):
 
 class Model(GANModelDesc):
     def inputs(self):
-        return [tf.TensorSpec((None, 28, 28), tf.float32, 'input')]
+        # return [tf.TensorSpec((None, 28, 28), tf.float32, 'input')]
+        return [tf.TensorSpec((None, 28, 28), tf.float32, 'input'), tf.TensorSpec((None, ), tf.int32, 'label')]
 
     def generator(self, z):
         l = FullyConnected('fc0', z, 1024, activation=BNReLU)
@@ -133,7 +134,8 @@ class Model(GANModelDesc):
                        .FullyConnected('fce-out', DIST_PARAM_DIM)())
         return logits, encoder
 
-    def build_graph(self, real_sample):
+    def build_graph(self, real_sample, real_label):
+
         real_sample = tf.expand_dims(real_sample, -1)
 
         # sample the latent code:
@@ -151,7 +153,14 @@ class Model(GANModelDesc):
 
             # may need to investigate how bn stats should be updated across two discrim
             with tf.variable_scope('discrim'):
-                real_pred, _ = self.discriminator(real_sample)
+                real_pred, real_param = self.discriminator(real_sample)
+                real_label_pred = tf.math.argmax(real_param[:, 0:10], 1)
+                mapping = tf.constant([8,9,4,2,5,7,3,1,0,6])
+                real_label_pred_final = tf.gather(mapping, real_label_pred)
+                real_pred = tf.Print(real_pred, [real_param[0, 0:10], real_label[0], real_label_pred[0], real_label_pred_final[0], tf.reduce_mean(tf.cast(tf.equal(real_label_pred_final, real_label), tf.float32))], summarize=10)
+
+                summary.add_moving_summary(tf.reduce_mean(tf.cast(tf.equal(real_label_pred_final, real_label), tf.float32)), decay=0.9999)
+
                 fake_pred, dist_param = self.discriminator(fake_sample)
 
         """
@@ -195,6 +204,7 @@ class Model(GANModelDesc):
 
     def optimizer(self):
         lr = tf.get_variable('learning_rate', initializer=2e-4, dtype=tf.float32, trainable=False)
+        # lr = tf.get_variable('learning_rate', initializer=0.0, dtype=tf.float32, trainable=False)
         opt = tf.train.AdamOptimizer(lr, beta1=0.5, epsilon=1e-6)
         # generator learns 5 times faster
         return optimizer.apply_grad_processors(
@@ -202,9 +212,11 @@ class Model(GANModelDesc):
 
 
 def get_data():
-    ds = ConcatData([dataset.Mnist('train'), dataset.Mnist('test')])
+    # ds = ConcatData([dataset.Mnist('train'), dataset.Mnist('test')])
+    ds = ConcatData([dataset.Mnist('test')])
     ds = BatchData(ds, BATCH)
-    ds = MapData(ds, lambda dp: [dp[0]])  # only use the image
+    # ds = MapData(ds, lambda dp: [dp[0]])  # only use the image
+    ds = MapData(ds, lambda dp: [dp[0], dp[1]])  # only use the image
     return ds
 
 
@@ -266,7 +278,9 @@ if __name__ == '__main__':
         GANTrainer(QueueInput(get_data()),
                    Model()).train_with_defaults(
             callbacks=[ModelSaver(keep_checkpoint_every_n_hours=0.1)],
-            steps_per_epoch=500,
-            max_epoch=100,
+            # steps_per_epoch=500,
+            steps_per_epoch=100,
+            # max_epoch=100,
+            max_epoch=1,
             session_init=SmartInit(args.load)
         )
