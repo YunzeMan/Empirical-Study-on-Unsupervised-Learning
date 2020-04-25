@@ -9,7 +9,7 @@ from sklearn.preprocessing import scale
 import torch
 import torchvision
 from torchvision import datasets, transforms
-
+from lib.dataset_shapenet import ShapenetDataset
 
 def get_all_data_mnist(dataset):
     n_samples = len(dataset)
@@ -42,6 +42,29 @@ def prepare_mnist_dataset():
     test_label = test_label.astype(int)
     print("************************ Finished mnist ************************")
     return train_data, train_label, test_data, test_label
+
+
+
+def get_all_data_shapenet(dataset):
+    loader = torch.utils.data.DataLoader(dataset, batch_size=1200,  shuffle=True, num_workers=8)
+    imgs = []
+    targets = []
+
+    for i, (data, target) in enumerate(loader):
+        imgs.append(data.numpy().squeeze())
+        targets.append(target.numpy().squeeze())
+    imgs = np.concatenate(imgs)
+    targets = np.concatenate(targets)
+    return imgs.reshape(imgs.shape[0], -1), targets.astype(int)
+
+def prepare_shapenet_dataset(shapenet_root):
+    transforms_shapenet = transforms.Compose([transforms.Grayscale(), transforms.Resize(128), transforms.ToTensor()])
+    train_dataset = ShapenetDataset("train", shapenet_root, transforms=transforms_shapenet)
+    test_dataset = ShapenetDataset("test", shapenet_root, transforms=transforms_shapenet)
+
+    train_imgs, train_labels = get_all_data_shapenet(train_dataset)
+    test_imgs, test_labels = get_all_data_shapenet(test_dataset)
+    return train_imgs, train_labels, test_imgs, test_labels
 
 
 def assign_majority(pred, label):

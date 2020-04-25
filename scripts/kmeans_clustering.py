@@ -50,24 +50,25 @@ if __name__ == "__main__":
 
 
 
-    print("k-means with pca...")
-    t0 = time()
-    pca = PCA(n_components=20).fit(train_data)
-    train_data_pca = pca.fit_transform(train_data) # 60000 x 50
-    km = KMeans(init='k-means++', n_clusters=n_digits, n_init=10).fit(train_data_pca)
-    print("done in %0.3fs" % (time() - t0))
-    assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
-    train_acc = np.sum(train_final_pred == train_label) / n_samples
-    print("train acc: %.3f" % train_acc)
+    # print("k-means with pca...")
+    # t0 = time()
+    # pca = PCA(n_components=20).fit(train_data)
+    # train_data_pca = pca.fit_transform(train_data) # 60000 x 50
+    # km = KMeans(init='k-means++', n_clusters=n_digits, n_init=10).fit(train_data_pca)
+    # print("done in %0.3fs" % (time() - t0))
+    # assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
+    # train_acc = np.sum(train_final_pred == train_label) / n_samples
+    # print("train acc: %.3f" % train_acc)
 
-    predicted_label = km.predict(pca.transform(test_data))
-    test_final_pred = np.zeros_like(predicted_label)
-    for i in range(10):
-        test_final_pred[predicted_label == i] = assigned_labels[i]
+    # predicted_label = km.predict(pca.transform(test_data))
+    # test_final_pred = np.zeros_like(predicted_label)
+    # for i in range(10):
+    #     test_final_pred[predicted_label == i] = assigned_labels[i]
 
-    test_acc = np.sum(test_final_pred == test_label) / len(test_label)
-    print("test acc: %.3f" % test_acc)
+    # test_acc = np.sum(test_final_pred == test_label) / len(test_label)
+    # print("test acc: %.3f" % test_acc)
 
+    ##############################################################################
     # print(len(mnist_trainset))
     # print(np.asarray(mnist_trainset[0]))
 

@@ -13,18 +13,19 @@ from lib.utils import *
 
 if __name__ == "__main__":
     
-    train_data, train_label, test_data, test_label =  prepare_mnist_dataset()
-    pca = PCA(0.5, whiten=True)
+    # train_data, train_label, test_data, test_label = prepare_mnist_dataset()
+    train_data, train_label, test_data, test_label = prepare_shapenet_dataset("/hdd/zen/data/Reallite/Rendering/chair_cls1")
+
+    pca = PCA(0.8, whiten=True)
     pca = pca.fit(train_data)
     train_data_pca = pca.transform(train_data)
     test_data_pca = pca.transform(test_data)
 
     cov_type = 'full'
-    n_comp = 40
+    n_comp = 30
     print("Train:", train_data_pca.shape, "Test:", test_data_pca.shape, "Diag_type:", cov_type, "Num_comp", n_comp)
     gmm = mixture.GaussianMixture(n_components=n_comp, covariance_type=cov_type)
     gmm.fit(train_data_pca)
-
 
     train_pred = gmm.predict(train_data_pca)
     train_final_pred, label_dict = assign_majority(train_pred, train_label)
