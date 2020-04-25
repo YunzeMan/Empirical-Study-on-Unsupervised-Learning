@@ -121,7 +121,8 @@ if __name__ == '__main__':
         km = KMeans(init='k-means++', n_clusters=10, n_init=10).fit(train_data)
         print("done in %0.3fs" % (time() - t0))
 
-        assigned_labels, train_final_pred = assign_majority(km.labels_, train_label)
+        assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
+        
         train_acc = np.mean(train_final_pred == train_label)
         print("train acc: %.3f" % train_acc)
 
