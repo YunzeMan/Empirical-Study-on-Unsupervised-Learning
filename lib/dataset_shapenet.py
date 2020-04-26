@@ -21,7 +21,7 @@ input_size = 128
 
 class ShapenetDataset(data.Dataset):
     def __init__(self, mode, dataset_root, rot_repr = "quat",  transforms=None, shuffle = True, split = 6/7):
-        print("********************** Loading SuperQuad Dataset **********************")
+        print("********************** Loading Shapenet Dataset **********************")
         np.random.seed(1) # train test split need to stablize
         self.transforms = transforms
         self.root = dataset_root
@@ -41,11 +41,18 @@ class ShapenetDataset(data.Dataset):
         
         print("Dataset Mode: ", mode)
         print("Dataset Length: ", len(self.data_list))
-        print("********************** Finished SuperQuad Dataset **********************")
+        print("********************** Finished Shapenet Dataset **********************")
 
     def parse_dataset(self, num_classes = 10):
-        classes = sorted(os.listdir(os.path.join(self.root, "data")))
-        classes = np.random.choice(classes, num_classes, replace = False)
+        # classes = sorted(os.listdir(os.path.join(self.root, "data")))
+        # classes = np.random.choice(classes, num_classes, replace = False)
+        classes = ['38436cce91dfe9a340b2974a4bd47901', 'ccfc857f35c138ede785b88cc9024b2a',
+                    '3fdc09d3065fa3c524e7e8a625efb2a7', '795f38ce5d8519938077cafed2bb8242',
+                    '30b0196b3b5431da2f95e2a1e9997b85', 'b405fa036403fbdb307776da88d1350f',
+                    '3af3096611c8eb363d658c402d71b967', 'ce8e6c13899376e2f3c9c1464e55d580',
+                    '4527cc19d2f09853a718067b9ac932e1', '124ef426dfa0aa38ff6069724068a578']
+        # print(classes)
+        self.classes = classes
         self.class_2_label = { classes[i]:i for i in range(len(classes))}
         
         all_images = []

@@ -16,13 +16,13 @@ if __name__ == "__main__":
     # train_data, train_label, test_data, test_label = prepare_mnist_dataset()
     train_data, train_label, test_data, test_label = prepare_shapenet_dataset("/hdd/zen/data/Reallite/Rendering/chair_cls1")
 
-    pca = PCA(0.8, whiten=True)
+    pca = PCA(0.7, whiten=True)
     pca = pca.fit(train_data)
     train_data_pca = pca.transform(train_data)
     test_data_pca = pca.transform(test_data)
 
     cov_type = 'full'
-    n_comp = 30
+    n_comp = 80
     print("Train:", train_data_pca.shape, "Test:", test_data_pca.shape, "Diag_type:", cov_type, "Num_comp", n_comp)
     gmm = mixture.GaussianMixture(n_components=n_comp, covariance_type=cov_type)
     gmm.fit(train_data_pca)
