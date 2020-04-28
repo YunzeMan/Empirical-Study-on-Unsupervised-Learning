@@ -12,6 +12,7 @@ from torchvision.datasets import MNIST
 from torchvision.utils import save_image
 
 from sklearn.cluster import KMeans
+from sklearn import mixture
 from lib.kmeans_lib import *
 from lib.utils import *
 
@@ -71,8 +72,10 @@ optimizer = torch.optim.Adam(
 # mode = 'train'
 mode = 'test'
 
-if mode == 'train':
+# backend = 'kmeans'
+backend = 'gmm'
 
+if mode == 'train':
     for epoch in range(num_epochs):
         for data in train_loader:
             img, _ = data
@@ -130,18 +133,37 @@ elif mode == 'test':
     train_labels = train_labels.astype(np.int32)
     test_labels = test_labels.astype(np.int32)
 
-    km = KMeans(init='k-means++', n_clusters=10, n_init=10).fit(train_features)
-    assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_labels)
-    train_acc = np.sum(train_final_pred == train_labels) / len(train_labels)
-    print("train acc: %.3f" % train_acc)
+    print("done extracting features ... ")
 
-    predicted_label = km.predict(test_features)
-    test_final_pred = np.zeros_like(predicted_label)
-    for i in range(10):
-        test_final_pred[predicted_label == i] = assigned_labels[i]
+    if backend == 'kmeans':
+        km = KMeans(init='k-means++', n_clusters=10, n_init=10).fit(train_features)
+        assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_labels)
+        train_acc = np.sum(train_final_pred == train_labels) / len(train_labels)
+        print("train acc: %.3f" % train_acc)
 
-    test_acc = np.sum(test_final_pred == test_labels) / len(test_labels)
-    print("test acc: %.3f" % test_acc)
+        predicted_label = km.predict(test_features)
+        test_final_pred = np.zeros_like(predicted_label)
+        for i in range(10):
+            test_final_pred[predicted_label == i] = assigned_labels[i]
+
+        test_acc = np.sum(test_final_pred == test_labels) / len(test_labels)
+        print("test acc: %.3f" % test_acc)
+
+    elif backend == 'gmm':
+        cov_type = 'full'
+        n_comp = 40
+        print("Train:", train_features.shape, "Test:", test_features.shape, "Diag_type:", cov_type, "Num_comp", n_comp)
+        gmm = mixture.GaussianMixture(n_components=n_comp, covariance_type=cov_type)
+        gmm.fit(train_features)
+
+        train_pred = gmm.predict(train_features)
+        train_final_pred, label_dict = assign_majority(train_pred, train_labels)
+        print("Train Acc:", np.mean(train_final_pred == train_labels))
+
+        test_pred = gmm.predict(test_features)
+        test_final_pred = pred_majority(test_pred, label_dict)
+        print("Test Acc:", np.mean(test_final_pred == test_labels))
+
     
 
     

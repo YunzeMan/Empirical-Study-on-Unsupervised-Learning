@@ -36,7 +36,15 @@ if __name__ == "__main__":
     km = KMeans(init='k-means++', n_clusters=n_digits, n_init=1).fit(train_data)
     print("done in %0.3fs" % (time() - t0))
     assigned_labels, train_final_pred = assign_labels_to_centroids_bipartite(km.labels_, train_label)
+    print(train_label)
+    print(assigned_labels)
+    print(train_final_pred)
     train_acc = np.sum(train_final_pred == train_label) / n_samples
+    print("train acc: %.3f" % train_acc)
+    assigned_labels, train_final_pred = assign_majority(km.labels_, train_label)
+    print(train_final_pred)
+    print(assigned_labels)
+    train_acc = np.sum(assigned_labels == train_label) / n_samples
     print("train acc: %.3f" % train_acc)
 
     predicted_label = km.predict(test_data)

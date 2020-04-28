@@ -69,7 +69,7 @@ def prepare_shapenet_dataset(shapenet_root):
 
 def assign_majority(pred, label):
     unique_pred = np.unique(pred)
-    final_pred = np.zeros(pred.shape)
+    final_pred = np.zeros(pred.shape, dtype=np.int32)
     label_dict = {}
 
     for i in unique_pred:
@@ -80,12 +80,13 @@ def assign_majority(pred, label):
         label_dict[i] = assigned_label
     for i in unique_pred:
         final_pred[pred == i] = label_dict[i]
+
     return final_pred, label_dict
 
 
 def pred_majority(pred, label_dict):
     unique_pred = np.unique(pred)
-    final_pred = np.zeros(pred.shape)
+    final_pred = np.zeros(pred.shape, dtype=np.int32)
     for i in unique_pred:
         final_pred[pred == i] = label_dict[i]
         
