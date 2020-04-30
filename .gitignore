@@ -3,6 +3,7 @@
 trained_models/
 someOtherfoler/
 *.pth
+MNIST/
 
 # Compiled source #
 ###################
