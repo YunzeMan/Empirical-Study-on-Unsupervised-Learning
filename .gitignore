@@ -2,7 +2,7 @@
 #n't track content of these folders
 trained_models/
 someOtherfoler/
-
+*.pth
 
 # Compiled source #
 ###################
