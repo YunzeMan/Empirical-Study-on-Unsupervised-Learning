@@ -15,8 +15,26 @@ In this
     
 
 # Environment
+To install the repective environment, refer to [Capsules](Capsules/README.md) and [MoCo](Capsules/README.md) for installation details. 
+
+# Dataset
+Our experiments are done on MNIST & self-rendered shapenet dataset. The shapenet dataset can be downloaded [here](https://drive.google.com/file/d/1msGsrX48YB92bm2f1YgxESuddvGu2Ywt/view?usp=sharing).
 
 
+# Run baseline methods (GMM, K-means)
 
+To run baseline methods, use the following commands:
 
+```python 
+python scripts/gmm_clustering.py --dataset mnist
+```
 
+To run shapenet tests, remember to change the the dataset directory to your extracted dataset directory. 
+
+```python 
+python scripts/gmm_clustering.py --dataset shapenet
+```
+
+```python 
+python scripts/kmeans_clustering.py --dataset mnist
+```

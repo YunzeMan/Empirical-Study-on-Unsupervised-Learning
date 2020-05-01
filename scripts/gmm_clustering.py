@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 sys.path.append(os.getcwd())
 
 from sklearn.cluster import KMeans
@@ -13,8 +14,22 @@ from lib.utils import *
 
 if __name__ == "__main__":
     
-    # train_data, train_label, test_data, test_label = prepare_mnist_dataset()
-    train_data, train_label, test_data, test_label = prepare_shapenet_dataset("/hdd/zen/data/Reallite/Rendering/chair_cls1")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", required=True)
+    args = parser.parse_args()
+
+    shapenet_dir = "/hdd/zen/data/Reallite/Rendering/chair_cls1"
+    if not os.path.isdir(shapenet_dir):
+        import pdb
+        pdb.set_trace()
+
+    if args.dataset == "mnist":
+        train_data, train_label, test_data, test_label = prepare_mnist_dataset()
+    elif args.dataset == "shapenet":
+        train_data, train_label, test_data, test_label = prepare_shapenet_dataset(shapnet_dir)
+    else:
+        print("unsupported dataset!!!")
+        exit()
     
     pca = PCA(0.7, whiten=True)
     pca = pca.fit(train_data)
