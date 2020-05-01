@@ -15,7 +15,7 @@ if __name__ == "__main__":
     
     # train_data, train_label, test_data, test_label = prepare_mnist_dataset()
     train_data, train_label, test_data, test_label = prepare_shapenet_dataset("/hdd/zen/data/Reallite/Rendering/chair_cls1")
-
+    
     pca = PCA(0.7, whiten=True)
     pca = pca.fit(train_data)
     train_data_pca = pca.transform(train_data)

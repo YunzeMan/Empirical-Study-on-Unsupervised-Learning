@@ -69,7 +69,6 @@ class ShapenetDataset(data.Dataset):
 
         try:
             img = Image.open('{}-color.png'.format( self.data_list[index]))
-            
             meta = np.load('{}-meta.npz'.format(self.data_list[index]))
         except Exception as e:
             print(e)

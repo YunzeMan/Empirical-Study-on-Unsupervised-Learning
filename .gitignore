@@ -4,6 +4,7 @@ trained_models/
 someOtherfoler/
 *.pth
 MNIST/
+Capsules/stacked_capsule_autoencoders/checkpoints/
 
 # Compiled source #
 ###################
@@ -15,6 +16,8 @@ MNIST/
 *.so
 *.pyc
 *.so
+*.pk
+*.pkl
 
 # Packages #
 ############
