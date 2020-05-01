@@ -112,7 +112,7 @@ if __name__ == '__main__':
     test_data_pca = test_data
 
     cov_type = 'full'
-    n_comp = 80
+    n_comp = 130
     print('The length of queue is %d, the momentum beta is %.4f, the number of epoch is %d' %(args.queue, args.beta, args.epoch), file=open("output.txt", "a"))
     print("Train:", train_data_pca.shape, "Test:", test_data_pca.shape, "Diag_type:", cov_type, "Num_comp", n_comp)
     gmm = mixture.GaussianMixture(n_components=n_comp, covariance_type=cov_type)
