@@ -1,1 +1,1 @@
-python InfoGAN-mnist.py --load ../InfoGAN-mnist.npz
+python InfoGAN-mnist.py --load ./InfoGAN-mnist.npz
