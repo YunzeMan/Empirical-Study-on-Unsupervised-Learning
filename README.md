@@ -4,7 +4,7 @@
 [Midway report overleaf link](https://www.overleaf.com/4123148767nnmknvwnmtry)
 
 # Overview
-In this 
+In this project, we studies the problem of unsupervised visual learning. We investigate both classical and state of the art unsupervsied learning methods and compare their performance. To analyze these methods, we choose the task of image classifcation. We run our experiments on the popular MNIST dataset, and also extend our experiments to a self-generated 3D shape dataset. 
 
 # Folder Structure
     .
@@ -40,4 +40,4 @@ python scripts/kmeans_clustering.py --dataset mnist
 ```
 
 # Run MoCo, Capsule, VAE experiments
-Refer to refer to [Capsules](Capsules/README.md),  [MoCo](Capsules/README.md) and [Autoencoder](Autoencoder/README.md) for details. 
+Refer to refer to [Capsules](Capsules/README.md),  [MoCo](Capsules/README.md) and [Autoencoder](Autoencoder/README.md) for details. a
