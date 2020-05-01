@@ -10,7 +10,10 @@ python Autoencoder/conv_ae.py
 ```
 
 # Dependencies
+```
 pytorch
+```
+```
 sklearn
-
+```
 
