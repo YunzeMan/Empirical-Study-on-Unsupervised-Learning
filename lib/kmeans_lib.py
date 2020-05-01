@@ -30,7 +30,7 @@ def assign_labels_to_centroids_bipartite(pred_labels, gt_labels):
 
     for i in range(n_digits):
         mask = (pred_labels == i)
-        cost_matrix[i, :] = np.bincount(gt_labels[mask]) # take minus here, low cost for better match
+        cost_matrix[i, :] = np.bincount(gt_labels[mask], minlength=np.max(gt_labels)+1) # take minus here, low cost for better match
         cost_matrix[i, :] = -cost_matrix[i, :] / np.sum(cost_matrix[i, :])
 
     row_ind, col_ind = linear_sum_assignment(cost_matrix)
