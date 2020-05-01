@@ -5,6 +5,7 @@ someOtherfoler/
 *.pth
 MNIST/
 Capsules/stacked_capsule_autoencoders/checkpoints/
+.vscode/
 
 # Compiled source #
 ###################
