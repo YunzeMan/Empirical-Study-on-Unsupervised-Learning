@@ -69,8 +69,8 @@ criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(
     model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
-# mode = 'train'
-mode = 'test'
+mode = 'train'
+# mode = 'test'
 
 # backend = 'kmeans'
 backend = 'gmm'

@@ -58,7 +58,8 @@ class ShapenetDataset(data.Dataset):
         all_images = []
         for class_name in classes:
             all_image = sorted(glob.glob(os.path.join(self.root, "data", class_name, "*-color.png")))
-            all_image = [os.path.join(self.root, "data", class_name, i.split("/")[-1].split("-")[0])  for i in all_image]
+            split_sign = "\\" if os.name == "nt" else "/" # a bug if running on windows platform
+            all_image = [os.path.join(self.root, "data", class_name, i.split(split_sign)[-1].split("-")[0])  for i in all_image]
             all_images = all_images + all_image
 
         self.data_list = all_images
