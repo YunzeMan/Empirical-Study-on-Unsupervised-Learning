@@ -40,4 +40,4 @@ python scripts/kmeans_clustering.py --dataset mnist
 ```
 
 # Run MoCo, Capsule, VAE experiments
-Refer to refer to [Capsules](Capsules/README.md),  [MoCo](Capsules/README.md) and [Autoencoder](Autoencoder/README.md) for details.
+Refer to refer to [Capsules](Capsules/README.md),  [MoCo](MoCo/README.md) and [Autoencoder](Autoencoder/README.md) for details.
