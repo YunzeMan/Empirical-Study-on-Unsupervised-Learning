@@ -17,7 +17,7 @@ In this project, we studies the problem of unsupervised visual learning. We inve
     
 
 # Environment
-To install the repective environment, refer to [Capsules](Capsules/README.md) and [MoCo](MoCo/README.md) for installation details. 
+To install the repective environment, refer to [Capsules](Capsules/README.md), [MoCo](MoCo/README.md), [InfoGAN](InfoGAN/README.md), and [Autoencoder](Autoencoder/README.md) for installation details. 
 
 # Dataset
 Our experiments are done on MNIST & self-rendered shapenet dataset. The shapeNet dataset can be downloaded [here](https://drive.google.com/file/d/1msGsrX48YB92bm2f1YgxESuddvGu2Ywt/view?usp=sharing).
@@ -42,4 +42,4 @@ python scripts/kmeans_clustering.py --dataset mnist
 ```
 
 # Run MoCo, Capsule, VAE experiments
-Please refer to [Capsules](Capsules/README.md),  [MoCo](MoCo/README.md) and [Autoencoder](Autoencoder/README.md) for training and testing details.
+Please refer to  [Capsules](Capsules/README.md), [MoCo](MoCo/README.md), [InfoGAN](InfoGAN/README.md), and [Autoencoder](Autoencoder/README.md) for training and testing details.
