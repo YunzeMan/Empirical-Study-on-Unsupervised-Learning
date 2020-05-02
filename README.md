@@ -25,17 +25,17 @@ Our experiments are done on MNIST & self-rendered shapenet dataset. The shapenet
 
 To run baseline methods, use the following commands:
 
-```python 
+```bash 
 python scripts/gmm_clustering.py --dataset mnist
 ```
 
 To run shapenet tests, remember to change the the dataset directory to your extracted dataset directory. 
 
-```python 
+```bash 
 python scripts/gmm_clustering.py --dataset shapenet
 ```
 
-```python 
+```bash 
 python scripts/kmeans_clustering.py --dataset mnist
 ```
 
