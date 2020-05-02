@@ -10,6 +10,8 @@ In this project, we studies the problem of unsupervised visual learning. We inve
     .
     ├── Capsules                   # Folder contains experiments about Stacked Capsule Autoencoders
     ├── MoCo                       # Folder contains experiments about MoCo (Momentum Contrast)
+    ├── Autoencoder                # Folder contains experiments about Autoencoder    
+    ├── InfoGAN                    # Folder contains experiments about InfoGAN
     ├── scripts                    # Scripts to run different baseline methods such as GMM & K-Means
     └── README.md
     
